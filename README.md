@@ -23,11 +23,40 @@ Bu proje, ham bir CSV verisini gerçek bir ilişkisel veritabanı yapısına dö
 │   ├── weatherHistory.csv        # Ham, orijinal veri seti (Kaggle)
 │   ├── lastWeatherHistory.csv    # Temizlenmiş ve normalize edilmiş ana veri
 │   └── statusTypes.csv           # Kategorik hava durumu özetleri (lookup tablo)
-├── weather_cleaning.py           # Veri temizliği, normalizasyon ve CSV export scripti
+├── weather_cleaning.py           # Veri temizliği, normalizasyon, hata yönetimi ve CSV export
 ├── weather_schema.sql            # Tablo oluşturma (DDL) ve foreign key tanımları
 ├── weather_load_data.sql         # CSV'den MySQL'e veri aktarım sorguları
+├── run_pipeline.py               # weather_schema.sql + weather_load_data.sql'i otomatik çalıştırıp
+│                                  # foreign key ilişkisini doğrulayan pipeline scripti
+├── .env.example                  # Veritabanı bağlantı bilgileri için şablon (.env oluştururken kopyala)
 └── README.md
 ```
+
+## Kurulum
+
+1. Gerekli kütüphaneleri kur:
+   ```bash
+   pip install pandas numpy mysql-connector-python python-dotenv
+   ```
+
+2. `.env.example` dosyasını `.env` olarak kopyala ve kendi MySQL bilgilerinle doldur:
+   ```
+   DB_HOST=localhost
+   DB_USER=root
+   DB_PASSWORD=senin_sifren
+   DB_NAME=veritabani_adin
+   ```
+   > `.env` dosyası `.gitignore` içinde olmalı ve asla GitHub'a yüklenmemeli.
+
+3. Veri temizliğini çalıştır:
+   ```bash
+   python weather_cleaning.py
+   ```
+
+4. Veritabanı pipeline'ını çalıştır (tabloları oluşturur, veriyi yükler, foreign key ilişkisini doğrular):
+   ```bash
+   python run_pipeline.py
+   ```
 
 ## İş Akışı (Pipeline)
 
@@ -87,7 +116,7 @@ FOREIGN KEY (status_id) REFERENCES status_types(status_id);
 ### 4. Veri Aktarımı (CSV → MySQL)
 
 ```sql
-LOAD DATA LOCAL INFILE 'C:/statusTypes.csv'
+LOAD DATA LOCAL INFILE 'datasets/statusTypes.csv'
 INTO TABLE status_types
 FIELDS TERMINATED BY ','
 ENCLOSED BY '"'
@@ -95,7 +124,7 @@ LINES TERMINATED BY '\r\n'
 IGNORE 1 ROWS
 (summary, precip_type, status_id);
 
-LOAD DATA LOCAL INFILE 'C:/lastWeatherHistory.csv'
+LOAD DATA LOCAL INFILE 'datasets/lastWeatherHistory.csv'
 INTO TABLE weather_data
 FIELDS TERMINATED BY ','
 ENCLOSED BY '"'
@@ -105,6 +134,8 @@ IGNORE 1 ROWS
 ```
 
 > **Not:** `LOAD DATA INFILE` içindeki sütun sırası, CSV dosyasındaki sütun sırasıyla birebir eşleşmelidir. Sıra tutmazsa MySQL veriyi yanlış sütunlara yazar (örn. metin bir değeri `status_id` gibi sayısal bir sütuna yazmaya çalışır ve hata verir).
+>
+> **Önemli:** Bu göreli yollar (`datasets/...`), sorguyu **proje kök klasöründen** çalıştırdığın varsayımıyla yazıldı - yani `weather_load_data.sql`'i çalıştırdığın MySQL client'ının (Workbench, terminal vb.) çalışma dizini proje kökü olmalı. Eğer farklı bir klasörden çalıştırırsan, yolu ona göre güncellemen gerekir.
 
 ### 5. Doğrulama
 
@@ -121,8 +152,14 @@ SELECT COUNT(*) FROM weather_data WHERE status_id IS NULL;
 - MySQL
 - CSV / `LOAD DATA INFILE`
 
+## Tamamlananlar
+
+- [x] Veri temizliği ve normalizasyon (Python)
+- [x] SQL şema ve foreign key ilişkisi (yapısal + veri düzeyinde doğrulandı)
+- [x] Hata yönetimi (try/except) - dosya okuma, tarih dönüşümü, merge, veritabanı bağlantısı
+- [x] Tek komutla çalışan otomatik pipeline (`run_pipeline.py`) ve güvenli kimlik bilgisi yönetimi (`.env`)
+
 ## Sonraki Adımlar
 
 - [ ] Power BI ile `weather_data` ve `status_types` tablolarının görselleştirilmesi
 - [ ] Aylık/yıllık sıcaklık ve yağış trend analizleri
-- [ ] Hata yönetimi (try/except) ve script'lerin tek bir otomatik pipeline haline getirilmesi
