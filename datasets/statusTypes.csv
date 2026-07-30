@@ -1,0 +1,45 @@
+summary,precip_type,status_id
+Partly Cloudy,rain,1
+Mostly Cloudy,rain,2
+Overcast,rain,3
+Foggy,rain,4
+Breezy and Mostly Cloudy,rain,5
+Clear,rain,6
+Breezy and Partly Cloudy,rain,7
+Breezy and Overcast,rain,8
+Humid and Mostly Cloudy,rain,9
+Foggy,snow,10
+Overcast,snow,11
+Clear,snow,12
+Mostly Cloudy,snow,13
+Partly Cloudy,snow,14
+Breezy and Overcast,snow,15
+Breezy and Mostly Cloudy,snow,16
+Humid and Partly Cloudy,rain,17
+Windy and Foggy,rain,18
+Windy and Overcast,rain,19
+Windy and Overcast,snow,20
+Windy and Foggy,snow,21
+Breezy and Foggy,snow,22
+Windy and Partly Cloudy,rain,23
+Breezy,rain,24
+Dry and Partly Cloudy,rain,25
+Windy and Mostly Cloudy,rain,26
+Breezy,snow,27
+Dangerously Windy and Partly Cloudy,rain,28
+Dry,rain,29
+Breezy and Partly Cloudy,snow,30
+Windy,rain,31
+Humid and Overcast,rain,32
+Breezy and Foggy,rain,33
+Mostly Cloudy,unknown,34
+Partly Cloudy,unknown,35
+Light Rain,rain,36
+Drizzle,rain,37
+Overcast,unknown,38
+Clear,unknown,39
+Windy and Dry,rain,40
+Dry and Mostly Cloudy,rain,41
+Breezy and Dry,rain,42
+Foggy,unknown,43
+Rain,rain,44
