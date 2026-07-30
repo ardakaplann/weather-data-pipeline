@@ -14,7 +14,7 @@ Bu proje, ham bir CSV verisini gerçek bir ilişkisel veritabanı yapısına dö
 
 ## Kullanılan Veri Seti
 
-[Kaggle - Weather History Dataset](https://www.kaggle.com/) (`weatherHistory.csv`) - saatlik hava durumu ölçümleri (sıcaklık, nem, rüzgar, basınç, görüş mesafesi vb.) ve kategorik hava durumu özetleri içerir.
+[Kaggle - Weather History Dataset](https://www.kaggle.com/datasets/budincsevity/szeged-weather) (`weatherHistory.csv`) - saatlik hava durumu ölçümleri (sıcaklık, nem, rüzgar, basınç, görüş mesafesi vb.) ve kategorik hava durumu özetleri içerir.
 
 ## Proje Yapısı
 
