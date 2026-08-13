@@ -29,6 +29,11 @@ Bu proje, ham bir CSV verisini gerçek bir ilişkisel veritabanı yapısına dö
 ├── run_pipeline.py               # weather_schema.sql + weather_load_data.sql'i otomatik çalıştırıp
 │                                  # foreign key ilişkisini doğrulayan pipeline scripti
 ├── .env.example                  # Veritabanı bağlantı bilgileri için şablon (.env oluştururken kopyala)
+├── weather_dashboard.pbix        # Power BI raporu (3 sayfa: Overview, Seasonal Analysis, Weather Conditions)
+├── screenshots/                  # Dashboard sayfalarının ekran görüntüleri
+│   ├── overview.png
+│   ├── seasonal_analysis.png
+│   └── weather_conditions.png
 └── README.md
 ```
 
@@ -146,11 +151,33 @@ SELECT COUNT(*) FROM weather_data WHERE status_id IS NULL;
 -- Sonuç: 0
 ```
 
+## Dashboard (Power BI)
+
+MySQL'deki `weather_data` ve `status_types` tabloları Power BI'a canlı bağlantıyla (Get Data → MySQL Database) aktarıldı, tablolar arasındaki ilişki `status_id` üzerinden Power BI Model ekranında kuruldu (many-to-one). 3 sayfalık bir rapor hazırlandı:
+
+### Sayfa 1 - Overview
+![Overview](screenshots/overview.png)
+
+Genel özet: ortalama sıcaklık (11.93°C), toplam kayıt sayısı (~96,453), yıllara göre sıcaklık trendi ve hava durumu kategorilerinin dağılımı. En sık görülen kategori "Partly Cloudy" (%32.9).
+
+### Sayfa 2 - Seasonal & Temporal Analysis
+![Seasonal Analysis](screenshots/seasonal_analysis.png)
+
+Aylık sıcaklık mevsimselliği net görülüyor: Temmuz civarında zirve (~23°C), Ocak'ta en düşük (~0.8°C). Yıl x Ay ısı haritası, yıllar arası mevsimsel tutarlılığı gösteriyor.
+
+### Sayfa 3 - Weather Conditions
+![Weather Conditions](screenshots/weather_conditions.png)
+
+`status_types` tablosuyla kurulan foreign key ilişkisi kullanılarak: yağış tipine göre sıcaklık/nem karşılaştırması (kar yağışında ortalama sıcaklık -3.27°C, yağmurda 13.85°C) ve aylara göre yağış tipi dağılımı.
+
+
+
 ## Kullanılan Teknolojiler
 
 - Python (Pandas, NumPy)
 - MySQL
 - CSV / `LOAD DATA INFILE`
+- Power BI (Power Query, DAX, veri modelleme)
 
 ## Tamamlananlar
 
@@ -158,8 +185,9 @@ SELECT COUNT(*) FROM weather_data WHERE status_id IS NULL;
 - [x] SQL şema ve foreign key ilişkisi (yapısal + veri düzeyinde doğrulandı)
 - [x] Hata yönetimi (try/except) - dosya okuma, tarih dönüşümü, merge, veritabanı bağlantısı
 - [x] Tek komutla çalışan otomatik pipeline (`run_pipeline.py`) ve güvenli kimlik bilgisi yönetimi (`.env`)
+- [x] Power BI ile 3 sayfalık dashboard (Overview, Seasonal & Temporal Analysis, Weather Conditions)
 
 ## Sonraki Adımlar
 
-- [ ] Power BI ile `weather_data` ve `status_types` tablolarının görselleştirilmesi
-- [ ] Aylık/yıllık sıcaklık ve yağış trend analizleri
+- [ ] Daha detaylı korelasyon analizleri (sıcaklık-nem-görüş mesafesi ilişkileri)
+- [ ] Power BI raporunu web'de yayınlama (Power BI Service)
