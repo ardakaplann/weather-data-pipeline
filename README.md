@@ -187,7 +187,4 @@ Aylık sıcaklık mevsimselliği net görülüyor: Temmuz civarında zirve (~23�
 - [x] Tek komutla çalışan otomatik pipeline (`run_pipeline.py`) ve güvenli kimlik bilgisi yönetimi (`.env`)
 - [x] Power BI ile 3 sayfalık dashboard (Overview, Seasonal & Temporal Analysis, Weather Conditions)
 
-## Sonraki Adımlar
-
-- [ ] Daha detaylı korelasyon analizleri (sıcaklık-nem-görüş mesafesi ilişkileri)
-- [ ] Power BI raporunu web'de yayınlama (Power BI Service)
+Bu proje, ham veriden dashboard'a kadar uçtan uca tamamlanmıştır.
